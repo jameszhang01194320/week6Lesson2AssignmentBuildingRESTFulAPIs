@@ -79,7 +79,7 @@ class WorkoutSession(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Integer, nullable=False)  # Duration in minutes
-    location = db.Column(db.String(100))  # 示例：定义了一个名为location的字符串类型字段
+    location = db.Column(db.String(100)) 
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'), nullable=False)
 
 # Member schema
