@@ -2,7 +2,7 @@
 ----------------------------------------------
 1: Setting Up the Flask Environment and Database Connection
 •	Create a new Flask project and set up a virtual environment.
-•	Install necessary packages like Flask, Flask-Marshmallow, and MySQL connector.
+•	pip install sqlalchemy marshmallow-sqlalchemy Flask Flask-SQLAlchemy Flask-Marshmallow marshmallow mysql-connector-python
 •	Establish a connection to your MySQL database.
 •	Use the Members and WorkoutSessions tables 
 
