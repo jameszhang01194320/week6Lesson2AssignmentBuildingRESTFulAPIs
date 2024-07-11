@@ -45,17 +45,14 @@
 4. Create a Python file app.py for Flask application and set up the database connection.
 app.py:
 """
-# from sqlalchemy.orm import Session
-# from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-# from marshmallow import ValidationError
+
 import logging
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-# from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import exc
 from datetime import datetime
 from flask_marshmallow import Marshmallow
-from sqlalchemy.exc import SQLAlchemyError  #, IntegrityError
+from sqlalchemy.exc import SQLAlchemyError 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:8832@localhost/ecom'
@@ -79,7 +76,7 @@ class WorkoutSession(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Integer, nullable=False)  # Duration in minutes
-    location = db.Column(db.String(100))  # 示例：定义了一个名为location的字符串类型字段
+    location = db.Column(db.String(100)) 
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'), nullable=False)
 
 # Member schema
@@ -109,16 +106,12 @@ sessions_schema = WorkoutSessionSchema(many=True)
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 
-
-
 # create table
 
 with app.app_context():
     db.create_all()
 
-# add member
-
-
+# Get all members
 @app.route('/members', methods=['GET'])
 def get_members():
     try:
@@ -144,6 +137,7 @@ def get_member(id):
         logging.error(f"Error fetching member: {str(e)}")
         return jsonify({'error': str(e)}), 400
 
+# Add new member
 @app.route('/members', methods=['POST'])
 def add_member():
     data = request.get_json()
@@ -157,29 +151,6 @@ def add_member():
         logging.error(f"Error adding member: {str(e)}")
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
-
-
-
-
-# # update
-# @app.route('/members/<int:id>', methods=['PUT'])
-# def update_member(id):
-#     member = db.session.get(Member, id) #Member.query.get(id)
-#     if member is None:
-#         return jsonify({'message': 'Member not found'}), 404
-    
-#     name = request.json.get('name', member.name)
-#     email = request.json.get('email', member.email)
-    
-#     try:
-#         member.name = name
-#         member.email = email
-#         db.session.commit()
-#         return member_schema.jsonify(member)
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({'message': str(e)}), 400
-
 
 
 # update member
@@ -215,14 +186,7 @@ def update_member(id):
         app.logger.error(f"Error updating member: {e}")
         return jsonify({"error": str(e)}), 400
 
-
-
-
-
-
-
-
-
+# Delete member
 @app.route('/members/<int:id>', methods=['DELETE'])
 def delete_member(id):
     try:
@@ -239,8 +203,6 @@ def delete_member(id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
 
-
-
 # Get all WorkoutSessions
 @app.route('/workouts', methods=['GET'])
 def get_workouts():
@@ -256,9 +218,6 @@ def get_workout(id):
         return jsonify({'message': 'Workout not found'}), 404
     return workout_session_schema.jsonify(workout)
 
-
-
-
 # create new workout
 @app.route('/workouts', methods=['POST'])
 def add_workout():
@@ -266,13 +225,14 @@ def add_workout():
     new_workout = WorkoutSession(
         date=datetime.fromisoformat(data['date']),
         duration=data['duration'],
-        member_id=data['member_id']
+        member_id=data['member_id'],
+        location=data['location']
     )
     db.session.add(new_workout)
     db.session.commit()
     return jsonify({'message': 'Workout session added'}), 201
 
-
+# Update workout_session
 @app.route('/workouts/<int:id>', methods=['PUT'])
 def update_workout_session(id):
     workout = db.session.get(WorkoutSession, id)

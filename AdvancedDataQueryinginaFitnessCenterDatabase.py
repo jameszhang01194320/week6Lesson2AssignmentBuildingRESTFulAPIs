@@ -1,6 +1,7 @@
 # 2.Advanced Data Querying in a Fitness Center Database
 # objective:The goal of this assignment is to enhance your skills in advanced SQL querying within a Flask application context.You'll Focus on
 # implementing specific SQL Functionalities,such as DISTINCT,COUNT,and BETWEEN,to extract meaningFul information from the Fitness center's database.
+
 # Task 1:SQL DISTINCT Usage
 # Problem Statement:Identify the distinct trainers working with gym members.
 # Expected Outcome:A list of unique trainer IDs from the Members table.
@@ -52,9 +53,6 @@ def list_distinct_trainers():
 
 
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
 # Task 2:SQL COUNT Functionality
 # Problem Statement:Count the total number of members assigned to each trainer,Focusing on understanding the GROUP BY clause.
 # Expected Outcome:A count of members grouped by their trainer IDs.
@@ -93,9 +91,6 @@ def count_members_per_trainer():
     finally:
         cursor.close()
         connection.close()
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
 
 
 # Task 3:SQL BETWEEN Usage
